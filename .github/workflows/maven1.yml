@@ -125,12 +125,9 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Kubectl Action
-        uses: tale/kubectl-action@v1
-        with:
-          base64-kube-config: ${{ secrets.KUBE_CONFIG }}  # Make sure KUBE_CONFIG is base64 encoded and stored in secrets
-
-      - name: Deploy to EKS
-        run: |
-          kubectl apply -f deployment-service.yaml -n webapps
-          kubectl get svc -n webapps
+      - name: Kubectl Action 
+        uses: tale/kubectl-action@v1 
+        with: 
+        base64-kube-config: ${{ secrets.KUBE_CONFIG }} - run: | 
+        kubectl apply -f deployment-service.yaml -n webapps 
+        kubectl get svc -n webapps
