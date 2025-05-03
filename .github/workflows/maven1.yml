@@ -119,16 +119,15 @@ jobs:
           tags: shahidshaikh13in/board:latest
           file: ./Dockerfile
 
-      deploy_to_kubernetes:
-      runs-on: self-hosted
-      needs: buils_docker_image_and_push
-    
+  deploy_to_kubernetes:
+    runs-on: self-hosted
+    needs: buils_docker_image_and_push
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
       
-        - name: Update AWS CLI
-          run: |
+      - name: Update AWS CLI
+        run: |
           curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
           unzip -o awscliv2.zip
           sudo ./aws/install --update
