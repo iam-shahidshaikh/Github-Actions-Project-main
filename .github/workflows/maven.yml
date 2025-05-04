@@ -71,12 +71,10 @@ jobs:
         run: |
           docker push shahidshaikh13in/board:latest
 
-      - name: Kubectl Action
+      - name: Deploy to Kubernetes
         uses: tale/kubectl-action@v1
         with:
-          base64-kube-config: ${{ secrets.KUBE_CONFIG }}
+        base64-kube-config: ${{ secrets.KUBE_CONFIG }}
+        kubectl-version: 'v1.33.0'
+        args: apply -f ds.yaml
 
-      - name: Deploy to Kubernetes
-        run: |
-          kubectl apply -f ds.yaml -n webapps
-          kubectl get svc -n webapps
