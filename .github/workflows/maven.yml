@@ -74,7 +74,6 @@ jobs:
       - name: Deploy to Kubernetes
         uses: tale/kubectl-action@v1
         with:
-        base64-kube-config: ${{ secrets.KUBE_CONFIG }}
-        kubectl-version: 'v1.33.0'
-        args: apply -f ds.yaml
-
+          base64-kube-config: ${{ secrets.KUBE_CONFIG }}
+          kubectl-version: 'v1.33.0'
+          args: apply -f ds.yaml
