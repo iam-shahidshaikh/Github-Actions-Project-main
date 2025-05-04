@@ -89,7 +89,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
 
-  buils_docker_image_and_push:
+  build_docker_image_and_push:  # 🔧 FIXED: typo "buils_docker_image_and_push"
     runs-on: self-hosted
     needs: build_project_and_sonar_scan
     steps:
@@ -120,15 +120,18 @@ jobs:
 
   deploy_to_kubernetes:
     runs-on: self-hosted
-    needs: buils_docker_image_and_push
+    needs: build_docker_image_and_push
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Kubectl Action 
-        uses: tale/kubectl-action@v1 
-        with: 
-        base64-kube-config: ${{ secrets.KUBE_CONFIG }} 
-        - run: | 
-        kubectl apply -f deployment-service.yaml -n webapps 
-        kubectl get svc -n webapps
+      - name: Set up kubectl
+        uses: tale/kubectl-action@v1
+        with:
+          base64-kube-config: ${{ secrets.KUBE_CONFIG }}
+          kubectl-version: 'v1.33.0'
+
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl apply -f ds.yaml -n webapps
+          kubectl get svc -n webapps
